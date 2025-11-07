@@ -30,6 +30,12 @@
         --success: #16A34A;
         --warning: #F59E0B;
         --error: #DC2626;
+        --success-light: #F0FDF4;
+        --error-light: #FEF2F2;
+        --success-text: #15803D;
+        --error-text: #B91C1C;
+        --success-hover: #15803d;
+        --error-hover: #b91c1c;
       }
 
       html.dark {
@@ -51,6 +57,12 @@
         --success: #22C55E;
         --warning: #FBBF24;
         --error: #F87171;
+        --success-light: rgba(34, 197, 94, 0.1);
+        --error-light: rgba(248, 113, 113, 0.1);
+        --success-text: #4ADE80;
+        --error-text: #FCA5A5;
+        --success-hover: #16a34a;
+        --error-hover: #ef4444;
       }
 
       body {
@@ -66,6 +78,23 @@
       .bg-surface-muted { background-color: var(--surface-muted); }
       .text-primary { color: var(--text-primary); }
       .text-secondary { color: var(--text-secondary); }
+      .bg-primary { background-color: var(--primary); }
+      .hover\:bg-primary-hover:hover { background-color: var(--primary-hover); }
+      .bg-primary-light { background-color: var(--primary-light); }
+      .text-primary-text { color: var(--primary-text); }
+      .bg-success { background-color: var(--success); }
+      .hover\:bg-success-hover:hover { background-color: var(--success-hover); }
+      .bg-error { background-color: var(--error); }
+      .hover\:bg-error-hover:hover { background-color: var(--error-hover); }
+      .text-success { color: var(--success); }
+      .text-error { color: var(--error); }
+      .bg-success-light { background-color: var(--success-light); }
+      .text-success-text { color: var(--success-text); }
+      .bg-error-light { background-color: var(--error-light); }
+      .text-error-text { color: var(--error-text); }
+      .border-border { border-color: var(--border); }
+      .hover\:border-primary:hover { border-color: var(--primary); }
+
 
       /* For Flashcard Animation */
       .perspective-1000 { perspective: 1000px; }

@@ -22,20 +22,24 @@ export const speakingTestData = (topic: string) => ({
     part1: [
         "Let's talk about your hometown. Can you describe it for me?",
         `What do you like most about your hometown?`,
-        `Now, let's move on to talk about ${topic}. Do you think ${topic} is important?`,
-        `How has ${topic} changed in your country in recent years?`,
+        `Now, let's move on to talk about daily routines. What is a typical day like for you?`,
+        `How has your daily routine changed compared to when you were a child?`,
     ],
     part2: [
-        `Describe an experience you had related to ${topic}.
+        `Now I'm going to give you a topic, and I'd like you to talk about it for one to two minutes.
+        Before you talk, you'll have one minute to think about what you are going to say.
+        You can make some notes if you wish.
+        
+        Describe the image you see.
         You should say:
-        - what the experience was
-        - when and where it happened
-        - who you were with
-        and explain how you felt about this experience.`
+        - what is happening in the image
+        - what the main objects or people are
+        - what kind of atmosphere or mood the image creates
+        and explain what this image makes you think about.`
     ],
     part3: [
-        `What are the general attitudes of people in your country towards ${topic}?`,
-        `How do you think technology will affect ${topic} in the future?`,
-        `What are the pros and cons of international cooperation on issues related to ${topic}?`,
+        `Let's discuss this further. How important is visual information in today's world?`,
+        `Do you think AI-generated images can be considered art? Why or why not?`,
+        `What are the potential benefits and drawbacks of being able to create any image from a text description?`,
     ]
 });

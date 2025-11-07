@@ -9,24 +9,15 @@ interface TestViewProps {
   onUpdateMastery: (word: string, wasCorrect: boolean) => void;
 }
 
-const CheckIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-        <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.052-.143Z" clipRule="evenodd" />
-    </svg>
-);
-
-const XMarkIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-        <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-    </svg>
-);
+const CheckIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-8 h-8"> <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clipRule="evenodd" /> </svg>);
+const XMarkIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-8 h-8"> <path fillRule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM8.28 7.22a.75.75 0 0 0-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06L10 11.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L11.06 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L10 8.94 8.28 7.22Z" clipRule="evenodd" /> </svg>);
 
 
 const TestView: React.FC<TestViewProps> = ({ test, vocabulary, onFinishTest, onUpdateMastery }) => {
   const allQuestions = useMemo(() => [
     ...test.mcqs.map(q => ({ ...q, type: 'mcq' as const })),
     ...test.fillInTheBlanks.map(q => ({ ...q, type: 'fill' as const })),
-    ...test.matchingPairs.length > 0 ? [{ pairs: test.matchingPairs, type: 'match' as const }] : []
+    ...test.matchingPairs.length > 0 ? [{ pairs: shuffle(test.matchingPairs), type: 'match' as const }] : []
   ], [test]);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -37,7 +28,7 @@ const TestView: React.FC<TestViewProps> = ({ test, vocabulary, onFinishTest, onU
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [isAnswered, setIsAnswered] = useState(false);
-  const [animationClass, setAnimationClass] = useState('animate-fade-in');
+  const [animationClass, setAnimationClass] = useState('animate-fade-in-up');
 
   // State for matching question
   const [shuffledDefinitions, setShuffledDefinitions] = useState<MatchingPair[]>([]);
@@ -67,7 +58,6 @@ const TestView: React.FC<TestViewProps> = ({ test, vocabulary, onFinishTest, onU
     });
   }
 
-  // FIX: Add handlers for MCQ selection and Fill-in-the-blank input.
   const handleSelectOption = (option: string) => {
     if (!isAnswered) {
       setSelectedOption(option);
@@ -117,7 +107,6 @@ const TestView: React.FC<TestViewProps> = ({ test, vocabulary, onFinishTest, onU
         setCorrectPairs(prev => [...prev, selectedWord.word]);
         setScore(s => s + 1);
     } else {
-        // Incorrect match attempt, mark the word for review
         if (!incorrectMatchAttempts.includes(selectedWord.word)) {
             const word = findWord(selectedWord.word);
             if (word) addIncorrectWord(word);
@@ -139,14 +128,13 @@ const TestView: React.FC<TestViewProps> = ({ test, vocabulary, onFinishTest, onU
     setTimeout(() => {
         if (currentQuestionIndex < allQuestions.length - 1) {
             setCurrentQuestionIndex(prev => prev + 1);
-            // Reset states
             setSelectedOption(null);
             setInputValue('');
             setIsAnswered(false);
             setSelectedWord(null);
             setCorrectPairs([]);
             setIncorrectMatchAttempts([]);
-            setAnimationClass('animate-fade-in');
+            setAnimationClass('animate-fade-in-up');
         } else {
             onFinishTest(score, incorrectWords);
         }
@@ -154,27 +142,28 @@ const TestView: React.FC<TestViewProps> = ({ test, vocabulary, onFinishTest, onU
   };
   
   const getButtonClass = (option: string) => {
+    const baseClass = 'w-full text-left p-4 rounded-xl border-2 font-semibold transition-all duration-200';
     if (!isAnswered) {
-        return selectedOption === option ? 'bg-blue-500 text-white ring-2 ring-blue-500' : 'bg-white dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600';
+        return `${baseClass} ${selectedOption === option ? 'bg-primary-light border-primary' : 'bg-surface hover:bg-surface-muted border-border hover:border-border-hover'}`;
     }
     if (option === (currentQuestion as MCQ).correctAnswer) {
-        return 'bg-green-100 dark:bg-green-900/30 border-green-500 text-green-800 dark:text-green-200';
+        return `${baseClass} bg-success-light border-success text-success-text`;
     }
     if (option === selectedOption && option !== (currentQuestion as MCQ).correctAnswer) {
-        return 'bg-red-100 dark:bg-red-900/30 border-red-500 text-red-800 dark:text-red-300';
+        return `${baseClass} bg-error-light border-error text-error-text opacity-50`;
     }
-    return 'bg-white dark:bg-slate-700 opacity-60';
+    return `${baseClass} bg-surface border-border opacity-50`;
   };
 
   const getInputClass = () => {
     if (!isAnswered) {
-        return "border-slate-300 dark:border-slate-600 focus:ring-blue-500 focus:border-blue-500";
+        return "border-border bg-surface-muted focus:ring-primary focus:border-primary";
     }
     const correctAnswer = (currentQuestion as FillBlankQuestion).correctAnswer;
     if (inputValue.trim().toLowerCase() === correctAnswer.toLowerCase()) {
-        return "bg-green-100 dark:bg-green-900/30 border-green-500 text-green-800 dark:text-green-200";
+        return "bg-success-light border-success text-success-text";
     }
-    return "bg-red-100 dark:bg-red-900/30 border-red-500 text-red-800 dark:text-red-300";
+    return "bg-error-light border-error text-error-text";
   }
 
   const renderFooter = () => {
@@ -190,124 +179,115 @@ const TestView: React.FC<TestViewProps> = ({ test, vocabulary, onFinishTest, onU
             isCorrect = inputValue.trim().toLowerCase() === currentQuestion.correctAnswer.toLowerCase();
             correctAnswerText = `Đáp án đúng: ${currentQuestion.correctAnswer}`;
         } else if (currentQuestion.type === 'match') {
-            isCorrect = true; // Match questions are always "correct" when done
+            isCorrect = true; // For matching, footer appears when all are correct.
         }
-        message = isCorrect ? 'Chính xác!' : 'Không đúng.';
+        message = isCorrect ? 'Tuyệt vời!' : 'Không sao, tiếp tục nào!';
       }
 
       return (
-          <div className={`transition-all duration-300 ${isAnswered ? 'h-32 opacity-100' : 'h-0 opacity-0'}`}>
-              {isAnswered && (
-                  <div className={`p-4 rounded-b-xl -m-8 mt-6 flex items-center justify-between ${isCorrect ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30'}`}>
-                    <div>
-                        <h4 className={`font-bold text-lg flex items-center gap-2 ${isCorrect ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
-                            {isCorrect ? <CheckIcon /> : <XMarkIcon />}
-                            {message}
-                        </h4>
-                        {!isCorrect && <p className="text-slate-600 dark:text-slate-300 mt-1">{correctAnswerText}</p>}
+          <div className={`fixed bottom-0 left-0 right-0 transition-transform duration-500 ease-in-out ${isAnswered ? 'translate-y-0' : 'translate-y-full'}`}>
+              <div className={`p-4 sm:p-6 ${isCorrect ? 'bg-success-light' : 'bg-error-light'}`}>
+                  <div className="max-w-4xl mx-auto flex items-center justify-between">
+                     <div className="flex items-center gap-4">
+                        {isCorrect ? <CheckIcon className="text-success" /> : <XMarkIcon className="text-error" />}
+                        <div>
+                            <h4 className={`font-bold text-xl ${isCorrect ? 'text-success-text' : 'text-error-text'}`}>
+                                {message}
+                            </h4>
+                            {!isCorrect && <p className="text-secondary mt-1">{correctAnswerText}</p>}
+                        </div>
                     </div>
-                     <button onClick={handleNext} className={`px-8 py-3 text-white font-bold rounded-lg ${isCorrect ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}`}>
+                    <button onClick={handleNext} className={`px-8 py-3 font-bold rounded-lg text-white ${isCorrect ? 'bg-success hover:bg-success-hover' : 'bg-error hover:bg-error-hover'}`}>
                         {currentQuestionIndex < allQuestions.length - 1 ? 'Tiếp theo' : 'Hoàn thành'}
                     </button>
-                  </div>
-              )}
+                 </div>
+              </div>
           </div>
       );
   }
 
   return (
-    <div className="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-lg animate-fade-in">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Kiểm tra kiến thức</h2>
-        <span className="text-sm font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full">
-          {currentQuestionIndex + 1} / {allQuestions.length}
-        </span>
-      </div>
+    <div className={`relative ${animationClass} pb-40`}>
+        <div className="p-2 sm:p-0">
+            <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold text-primary">Kiểm tra kiến thức</h2>
+            <span className="text-sm font-semibold text-secondary">
+                {currentQuestionIndex + 1} / {allQuestions.length}
+            </span>
+            </div>
+            <div className="w-full bg-surface-muted rounded-full h-4 border border-border p-0.5 mb-8">
+                <div className="bg-success h-full rounded-full" style={{ width: `${((currentQuestionIndex + 1) / allQuestions.length) * 100}%`, transition: 'width 0.5s ease-in-out' }}></div>
+            </div>
 
-      <div className={`my-6 min-h-[200px] ${animationClass}`}>
-        {currentQuestion.type === 'mcq' && (
-          <div>
-            <p className="text-lg text-slate-700 dark:text-slate-300 mb-4">{currentQuestion.question}</p>
-            <div className="space-y-3">
-              {currentQuestion.options.map(option => (
-                <button
-                  key={option}
-                  onClick={() => handleSelectOption(option)}
-                  disabled={isAnswered}
-                  className={`w-full text-left p-4 rounded-lg border border-slate-300 dark:border-slate-600 transition-colors duration-200 ${getButtonClass(option)}`}
-                >
-                  {option}
+            <div className="my-6 min-h-[250px]">
+            {currentQuestion.type === 'mcq' && (
+                <div>
+                <p className="text-xl text-primary mb-6">{currentQuestion.question}</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {currentQuestion.options.map(option => (
+                    <button key={option} onClick={() => handleSelectOption(option)} disabled={isAnswered}
+                        className={getButtonClass(option)}>
+                        {option}
+                    </button>
+                    ))}
+                </div>
+                </div>
+            )}
+            {currentQuestion.type === 'fill' && (
+                <div>
+                <p className="text-xl text-primary mb-6" dangerouslySetInnerHTML={{ __html: currentQuestion.sentence.replace('___', '<span class="font-bold text-primary-text">___</span>') }} />
+                <input type="text" value={inputValue} onChange={handleInputChange} disabled={isAnswered}
+                    className={`w-full p-4 rounded-lg border-2 text-xl ${getInputClass()}`} placeholder="Nhập câu trả lời của bạn"/>
+                </div>
+            )}
+            {currentQuestion.type === 'match' && (
+                <div>
+                    <p className="text-xl text-primary mb-6">Nối từ với định nghĩa đúng của nó.</p>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-3">
+                            {currentQuestion.pairs.map(pair => {
+                                const isSelected = selectedWord?.word === pair.word;
+                                const isCorrect = correctPairs.includes(pair.word);
+                                return (
+                                    <button key={pair.word} onClick={() => handleSelectMatchWord(pair)} disabled={isCorrect || isAnswered}
+                                    className={`w-full p-3 text-center rounded-xl border-2 font-semibold transition-colors ${
+                                        isCorrect ? 'bg-success-light border-success !text-secondary cursor-default' :
+                                        isSelected ? 'bg-primary-light border-primary ring-2 ring-primary' :
+                                        'bg-surface hover:bg-surface-muted border-border'
+                                    }`}>
+                                        {pair.word}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                        <div className="space-y-3">
+                            {shuffledDefinitions.map(pair => {
+                                    const isCorrect = correctPairs.includes(pair.word);
+                                return (
+                                    <button key={pair.word} onClick={() => handleSelectMatchDefinition(pair)} disabled={isCorrect || !selectedWord || isAnswered}
+                                    className={`w-full p-3 text-left text-sm rounded-xl border-2 transition-colors h-[50px] overflow-hidden ${
+                                        isCorrect ? 'bg-success-light border-success !text-secondary cursor-default' :
+                                        'bg-surface hover:bg-surface-muted border-border disabled:opacity-50'
+                                    }`}>
+                                        {pair.definition}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            )}
+            </div>
+
+            <div className="mt-6 flex justify-end">
+            {currentQuestion.type !== 'match' && !isAnswered && (
+                <button onClick={handleSubmit} className="px-12 py-3 btn-primary text-lg" disabled={currentQuestion.type === 'mcq' ? !selectedOption : !inputValue}>
+                Kiểm tra
                 </button>
-              ))}
+            )}
             </div>
-          </div>
-        )}
-        {currentQuestion.type === 'fill' && (
-          <div>
-            <p className="text-lg text-slate-700 dark:text-slate-300 mb-4" dangerouslySetInnerHTML={{ __html: currentQuestion.sentence.replace('___', '<span class="font-bold">___</span>') }} />
-            <input
-              type="text"
-              value={inputValue}
-              onChange={handleInputChange}
-              disabled={isAnswered}
-              className={`w-full p-3 rounded-lg border text-lg ${getInputClass()}`}
-              placeholder="Nhập câu trả lời của bạn"
-            />
-          </div>
-        )}
-        {currentQuestion.type === 'match' && (
-            <div>
-                 <p className="text-lg text-slate-700 dark:text-slate-300 mb-4">Nối từ với định nghĩa đúng của nó.</p>
-                 <div className="grid grid-cols-2 gap-4">
-                    {/* Words Column */}
-                    <div className="space-y-3">
-                        {currentQuestion.pairs.map(pair => {
-                            const isSelected = selectedWord?.word === pair.word;
-                            const isCorrect = correctPairs.includes(pair.word);
-                            return (
-                                <button
-                                key={pair.word}
-                                onClick={() => handleSelectMatchWord(pair)}
-                                disabled={isCorrect || isAnswered}
-                                className={`w-full p-3 text-center rounded-lg border transition-colors ${
-                                    isCorrect ? 'bg-green-100 dark:bg-green-900/30 border-green-500 !text-slate-500' :
-                                    isSelected ? 'bg-blue-200 dark:bg-blue-900/50 border-blue-500 ring-2 ring-blue-500' :
-                                    'bg-white dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 border-slate-300 dark:border-slate-600'
-                                }`}
-                                >{pair.word}</button>
-                            );
-                        })}
-                    </div>
-                    {/* Definitions Column */}
-                    <div className="space-y-3">
-                        {shuffledDefinitions.map(pair => {
-                             const isCorrect = correctPairs.includes(pair.word);
-                            return (
-                                <button
-                                key={pair.word}
-                                onClick={() => handleSelectMatchDefinition(pair)}
-                                disabled={isCorrect || !selectedWord || isAnswered}
-                                className={`w-full p-3 text-left text-sm rounded-lg border transition-colors ${
-                                     isCorrect ? 'bg-green-100 dark:bg-green-900/30 border-green-500 !text-slate-500' :
-                                     'bg-white dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 border-slate-300 dark:border-slate-600 disabled:opacity-50'
-                                }`}
-                                >{pair.definition}</button>
-                            );
-                        })}
-                    </div>
-                 </div>
-            </div>
-        )}
       </div>
-
-      <div className="mt-6 flex justify-end">
-        {currentQuestion.type !== 'match' && !isAnswered && (
-          <button onClick={handleSubmit} className="px-8 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors" disabled={currentQuestion.type === 'mcq' ? !selectedOption : !inputValue}>
-            Kiểm tra
-          </button>
-        )}
-      </div>
-       {renderFooter()}
+      {renderFooter()}
     </div>
   );
 };

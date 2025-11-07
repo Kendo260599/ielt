@@ -35,27 +35,27 @@ const LeaderboardView: React.FC<LeaderboardViewProps> = ({ currentUserScore, onB
 
   const getRankColor = (rank: number) => {
     if (rank === 1) return 'text-yellow-400';
-    if (rank === 2) return 'text-gray-400';
+    if (rank === 2) return 'text-slate-400';
     if (rank === 3) return 'text-amber-600';
-    return 'text-gray-500';
+    return 'text-secondary';
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg animate-fade-in">
+    <div className="bg-surface p-6 sm:p-8 rounded-xl shadow-lg border border-border animate-fade-in-up">
       <div className="flex items-center justify-between mb-6">
         <button
           onClick={onBack}
-          className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+          className="flex items-center px-4 py-2 text-sm font-medium text-secondary bg-surface rounded-lg border border-border hover:bg-surface-muted transition-colors"
         >
           <BackArrowIcon />
           Quay lại
         </button>
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">Bảng xếp hạng</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold text-primary">Bảng xếp hạng</h2>
         <div className="w-28 hidden sm:block"></div> {/* Spacer */}
       </div>
 
       {isLoading && <Spinner message="Đang tải bảng xếp hạng..." />}
-      {error && <p className="text-center text-red-500">{error}</p>}
+      {error && <p className="text-center text-error">{error}</p>}
       {!isLoading && !error && (
         <div className="space-y-2">
           {leaderboard.map((entry) => (
@@ -63,8 +63,8 @@ const LeaderboardView: React.FC<LeaderboardViewProps> = ({ currentUserScore, onB
               key={entry.rank}
               className={`flex items-center p-3 rounded-lg transition-colors ${
                 entry.isCurrentUser
-                  ? 'bg-indigo-100 dark:bg-indigo-900/40 border-2 border-indigo-500'
-                  : 'bg-gray-50 dark:bg-gray-700/50'
+                  ? 'bg-primary-light border-2 border-primary'
+                  : 'bg-surface-muted'
               }`}
             >
               <div className="w-10 text-center">
@@ -73,9 +73,9 @@ const LeaderboardView: React.FC<LeaderboardViewProps> = ({ currentUserScore, onB
                 </span>
               </div>
               <div className="flex-grow mx-4">
-                <p className="font-semibold text-gray-800 dark:text-gray-200">{entry.name}</p>
+                <p className="font-semibold text-primary">{entry.name}</p>
               </div>
-              <div className="flex items-center font-bold text-indigo-600 dark:text-indigo-400">
+              <div className="flex items-center font-bold text-primary">
                 <TrophyIcon />
                 <span className="ml-2">{entry.fluencyScore}</span>
               </div>

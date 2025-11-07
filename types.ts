@@ -3,6 +3,7 @@ import React from 'react';
 export type IELTSLevel = 'Band 5.0-5.5' | 'Band 6.0-6.5' | 'Band 7.0-7.5' | 'Band 8.0+';
 
 export enum AppState {
+  SHOWING_LANDING_PAGE = 'SHOWING_LANDING_PAGE',
   SHOWING_LOGIN = 'SHOWING_LOGIN',
   SHOWING_INTRO = 'SHOWING_INTRO',
   SHOWING_DASHBOARD = 'SHOWING_DASHBOARD',
@@ -35,6 +36,7 @@ export interface VocabularyWord {
   example: string;
   definition_vi: string;
   example_vi: string;
+  imageUrl?: string;
 }
 
 export interface WordExplanation {
@@ -42,6 +44,13 @@ export interface WordExplanation {
     antonyms: string[];
     collocations: string[];
     detailedExplanation: string;
+}
+
+export interface PronunciationFeedback {
+  isCorrect: boolean;
+  feedback: string;
+  tip: string;
+  transcript: string;
 }
 
 export interface MCQ {
@@ -107,7 +116,6 @@ export interface AuthUser {
 }
 
 export type TranscriptItem = {
-    // FIX: Add 'user_interim' to support temporary transcription results from the speech recognition API.
     speaker: 'user' | 'model' | 'feedback' | 'system' | 'user_interim';
     text: string;
 };

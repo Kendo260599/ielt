@@ -32,28 +32,28 @@ const AITutorView: React.FC<AITutorViewProps> = ({ history, isLoading, onSendMes
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 w-full h-[80vh] max-h-[700px] rounded-2xl shadow-lg flex flex-col p-4 sm:p-6 animate-fade-in">
-        <div className="flex-shrink-0 flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700">
-            <button onClick={onBack} className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+    <div className="bg-surface w-full h-[80vh] max-h-[700px] rounded-2xl shadow-lg flex flex-col p-4 sm:p-6 animate-fade-in-up border border-border">
+        <div className="flex-shrink-0 flex justify-between items-center pb-4 border-b border-border">
+            <button onClick={onBack} className="flex items-center text-sm font-medium text-secondary hover:text-primary transition-colors">
                 <BackArrowIcon />
                 Quay lại
             </button>
-             <h2 className="text-xl font-bold">Gemini Tutor</h2>
+             <h2 className="text-xl font-bold text-primary">Gemini Tutor</h2>
              <div className="w-24"></div>
         </div>
 
         <div className="flex-grow overflow-y-auto pr-2 space-y-4 py-4">
             {history.map((item, index) => (
                 <div key={index} className={`flex items-start gap-3 ${item.speaker === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    {item.speaker === 'tutor' && <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold flex-shrink-0 mt-1">G</div>}
+                    {item.speaker === 'tutor' && <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-bold flex-shrink-0 mt-1">G</div>}
                     <div className={`max-w-[85%] p-3 rounded-2xl ${
-                        item.speaker === 'user' ? 'bg-indigo-600 text-white rounded-br-none' : 'bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-100 rounded-bl-none'
+                        item.speaker === 'user' ? 'bg-primary text-white rounded-br-none' : 'bg-surface-muted text-primary rounded-bl-none'
                     }`}>
                         {item.isTyping ? 
                             <div className="flex items-center space-x-1 p-2">
-                                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-                                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-                                <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
+                                <span className="w-2 h-2 bg-secondary/50 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                                <span className="w-2 h-2 bg-secondary/50 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                                <span className="w-2 h-2 bg-secondary/50 rounded-full animate-bounce"></span>
                             </div>
                             : <p className="whitespace-pre-wrap">{item.text}</p>
                         }
@@ -63,17 +63,17 @@ const AITutorView: React.FC<AITutorViewProps> = ({ history, isLoading, onSendMes
              <div ref={messagesEndRef} />
         </div>
 
-        <div className="flex-shrink-0 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex-shrink-0 pt-4 border-t border-border">
             <form onSubmit={handleSubmit} className="flex items-center gap-2">
                 <input
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Ask your tutor anything..."
-                    className="flex-grow w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="flex-grow w-full p-3 rounded-xl border-2 border-border bg-surface-muted focus:ring-2 focus:ring-primary focus:border-primary"
                     disabled={isLoading}
                 />
-                <button type="submit" className="p-3 bg-indigo-600 text-white rounded-lg shadow-sm hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors">
+                <button type="submit" className="p-3 bg-primary text-white rounded-xl shadow-sm hover:bg-primary-hover disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors">
                     <SendIcon />
                 </button>
             </form>

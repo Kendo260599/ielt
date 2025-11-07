@@ -24,9 +24,9 @@ interface LineChartProps {
     gradientId: string;
 }
 
-const LineChart: React.FC<LineChartProps> = ({ data, width = 300, height = 150, color = "#4338ca", gradientId }) => {
+const LineChart: React.FC<LineChartProps> = ({ data, width = 300, height = 150, color = "var(--primary)", gradientId }) => {
     if (data.length < 2) {
-        return <div style={{height}} className="flex items-center justify-center text-slate-500">Cần thêm dữ liệu để vẽ biểu đồ.</div>;
+        return <div style={{height}} className="flex items-center justify-center text-secondary">Cần thêm dữ liệu để vẽ biểu đồ.</div>;
     }
 
     const PADDING = 20;
@@ -71,7 +71,7 @@ const LineChart: React.FC<LineChartProps> = ({ data, width = 300, height = 150, 
                     strokeLinejoin="round"
                     points={points}
                 />
-                 <circle cx={lastX} cy={lastY} r="5" fill="white" stroke={color} strokeWidth="2.5" />
+                 <circle cx={lastX} cy={lastY} r="5" fill="var(--surface)" stroke={color} strokeWidth="2.5" />
             </g>
         </svg>
     );
@@ -90,67 +90,67 @@ const ProgressView: React.FC<ProgressViewProps> = ({ userData, user, onBack, onV
 
 
     return (
-        <div className="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-xl shadow-lg animate-fade-in">
+        <div className="bg-surface p-6 sm:p-8 rounded-xl shadow-lg border border-border animate-fade-in-up">
              <div className="flex items-start justify-between mb-8">
                 <button 
                     onClick={onBack}
-                    className="flex-shrink-0 flex items-center px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"
+                    className="flex-shrink-0 flex items-center px-4 py-2 text-sm font-medium text-secondary bg-surface rounded-lg border border-border hover:bg-surface-muted transition-colors"
                 >
                     <BackArrowIcon />
                     Quay lại
                 </button>
                 <div className="text-center">
-                    <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">Tiến độ Học tập</h2>
-                    <p className="text-slate-600 dark:text-slate-400 mt-1">của {user.displayName || 'Bạn'}</p>
+                    <h2 className="text-2xl sm:text-3xl font-bold text-primary">Tiến độ Học tập</h2>
+                    <p className="text-secondary mt-1">của {user.displayName || 'Bạn'}</p>
                 </div>
                 <div className="w-28 hidden sm:block flex-shrink-0"></div> {/* Spacer */}
             </div>
 
             {/* Stats Overview */}
              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center mb-10">
-                <div className="bg-slate-50 dark:bg-slate-700/50 p-6 rounded-lg">
+                <div className="bg-surface-muted p-6 rounded-lg">
                     <p className="text-4xl font-bold text-orange-500">{userData.streak}</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Ngày Streak</p>
+                    <p className="text-sm text-secondary mt-1">Ngày Streak</p>
                 </div>
-                <div className="bg-slate-50 dark:bg-slate-700/50 p-6 rounded-lg">
+                <div className="bg-surface-muted p-6 rounded-lg">
                     <p className="text-4xl font-bold text-yellow-500">{userData.totalXp}</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Tổng XP</p>
+                    <p className="text-sm text-secondary mt-1">Tổng XP</p>
                 </div>
-                 <div className="bg-slate-50 dark:bg-slate-700/50 p-6 rounded-lg">
-                    <p className="text-4xl font-bold text-indigo-500">{totalTopicsCompleted}</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Chủ đề Hoàn thành</p>
+                 <div className="bg-surface-muted p-6 rounded-lg">
+                    <p className="text-4xl font-bold text-primary">{totalTopicsCompleted}</p>
+                    <p className="text-sm text-secondary mt-1">Chủ đề Hoàn thành</p>
                 </div>
-                <div className="bg-slate-50 dark:bg-slate-700/50 p-6 rounded-lg">
-                    <p className="text-4xl font-bold text-green-500">{totalAchievements}</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Thành tích</p>
+                <div className="bg-surface-muted p-6 rounded-lg">
+                    <p className="text-4xl font-bold text-success">{totalAchievements}</p>
+                    <p className="text-sm text-secondary mt-1">Thành tích</p>
                 </div>
             </div>
             
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg flex items-center justify-between mb-10">
+            <div className="bg-warning-light p-4 rounded-lg flex items-center justify-between mb-10">
                 <div>
-                    <h4 className="font-semibold text-yellow-800 dark:text-yellow-200 flex items-center"><TrophyIcon /> Trung tâm Thành tích</h4>
-                    <p className="text-sm text-yellow-700 dark:text-yellow-300">Xem tất cả thành tích và tiến trình của bạn.</p>
+                    <h4 className="font-semibold text-warning-text flex items-center"><TrophyIcon /> Trung tâm Thành tích</h4>
+                    <p className="text-sm text-warning-text/80">Xem tất cả thành tích và tiến trình của bạn.</p>
                 </div>
-                <button onClick={onViewAchievements} className="px-4 py-2 text-sm font-semibold bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors">
+                <button onClick={onViewAchievements} className="px-4 py-2 text-sm font-semibold bg-warning text-white rounded-lg hover:bg-warning-hover transition-colors">
                     Xem
                 </button>
             </div>
 
             {/* Performance Trends */}
              <div>
-                <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4">Xu hướng Hiệu suất</h3>
+                <h3 className="text-xl font-semibold text-primary mb-4">Xu hướng Hiệu suất</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-lg">
-                        <h4 className="font-bold text-slate-700 dark:text-slate-300 mb-2">Fluency Score</h4>
-                        <LineChart data={fluencyTrendData} color="#4338ca" gradientId="fluencyGrad" />
+                    <div className="bg-surface-muted p-4 rounded-lg">
+                        <h4 className="font-bold text-primary mb-2">Fluency Score</h4>
+                        <LineChart data={fluencyTrendData} color="var(--primary)" gradientId="fluencyGrad" />
                     </div>
-                     <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-lg">
-                        <h4 className="font-bold text-slate-700 dark:text-slate-300 mb-2">Điểm Test (%)</h4>
-                        <LineChart data={testScoreData} color="#10b981" gradientId="testGrad" />
+                     <div className="bg-surface-muted p-4 rounded-lg">
+                        <h4 className="font-bold text-primary mb-2">Điểm Test (%)</h4>
+                        <LineChart data={testScoreData} color="var(--success)" gradientId="testGrad" />
                     </div>
-                     <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-lg">
-                        <h4 className="font-bold text-slate-700 dark:text-slate-300 mb-2">Điểm Nói (Band)</h4>
-                        <LineChart data={speakingScoreData} color="#a855f7" gradientId="speakingGrad" />
+                     <div className="bg-surface-muted p-4 rounded-lg">
+                        <h4 className="font-bold text-primary mb-2">Điểm Nói (Band)</h4>
+                        <LineChart data={speakingScoreData} color="var(--purple-500)" gradientId="speakingGrad" />
                     </div>
                 </div>
              </div>

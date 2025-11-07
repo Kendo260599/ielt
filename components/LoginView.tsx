@@ -22,12 +22,12 @@ const AppLogo = () => (
 
 interface LoginViewProps {
     onSignIn: () => void;
-    onContinueAsGuest: () => void;
+    onBack: () => void;
     isLoading: boolean;
     error: string | null;
 }
 
-const LoginView: React.FC<LoginViewProps> = ({ onSignIn, onContinueAsGuest, isLoading, error }) => {
+const LoginView: React.FC<LoginViewProps> = ({ onSignIn, onBack, isLoading, error }) => {
     return (
         <div className="flex h-full items-center justify-center animate-fade-in-up">
             <div className="w-full max-w-sm p-8 space-y-6 bg-surface shadow-xl rounded-2xl border border-border">
@@ -35,8 +35,8 @@ const LoginView: React.FC<LoginViewProps> = ({ onSignIn, onContinueAsGuest, isLo
                     <div className="flex justify-center mb-4">
                         <AppLogo />
                     </div>
-                    <h1 className="text-3xl font-bold text-primary">Chào mừng đến với IELTS Scholar</h1>
-                    <p className="mt-2 text-secondary">Đăng nhập để lưu tiến độ hoặc tiếp tục với tư cách khách.</p>
+                    <h1 className="text-3xl font-bold text-primary">IELTS Scholar</h1>
+                    <p className="mt-2 text-secondary">Đăng nhập để lưu tiến độ học tập của bạn.</p>
                 </div>
                 {isLoading ? (
                     <div className="py-8">
@@ -46,16 +46,10 @@ const LoginView: React.FC<LoginViewProps> = ({ onSignIn, onContinueAsGuest, isLo
                     <div className="space-y-4">
                         <button
                             onClick={onSignIn}
-                            className="w-full flex items-center justify-center py-3 px-4 text-sm font-semibold rounded-lg border border-border bg-surface text-primary hover:bg-surface-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-gray-800 transition-colors"
+                            className="w-full flex items-center justify-center py-3 px-4 text-sm font-semibold rounded-lg border border-border bg-surface text-primary hover:bg-surface-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-background-start transition-colors"
                         >
                             <GoogleIcon />
-                            Đăng nhập với Google
-                        </button>
-                        <button
-                            onClick={onContinueAsGuest}
-                            className="w-full flex items-center justify-center py-3 px-4 text-sm font-semibold rounded-lg border border-transparent bg-surface-muted text-secondary hover:bg-border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:focus:ring-offset-gray-800 transition-colors"
-                        >
-                            Tiếp tục với tư cách Khách
+                            Tiếp tục với Google
                         </button>
                         {error && (
                             <div 
@@ -63,6 +57,11 @@ const LoginView: React.FC<LoginViewProps> = ({ onSignIn, onContinueAsGuest, isLo
                                 dangerouslySetInnerHTML={{ __html: error }}
                             />
                         )}
+                         <div className="text-center mt-4">
+                            <button onClick={onBack} className="text-sm text-secondary hover:text-primary transition-colors">
+                                &larr; Quay lại trang chủ
+                            </button>
+                        </div>
                     </div>
                 )}
             </div>

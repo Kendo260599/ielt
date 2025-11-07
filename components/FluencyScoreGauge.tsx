@@ -16,9 +16,9 @@ const FluencyScoreGauge: React.FC<FluencyScoreGaugeProps> = ({ score, size = 160
   const offset = circumference - percentage * circumference;
 
   const getScoreColor = () => {
-    if (percentage < 0.3) return 'text-red-500';
-    if (percentage < 0.7) return 'text-yellow-500';
-    return 'text-green-500';
+    if (percentage < 0.3) return 'text-error';
+    if (percentage < 0.7) return 'text-warning';
+    return 'text-success';
   };
   
   const scoreColor = getScoreColor();
@@ -28,7 +28,7 @@ const FluencyScoreGauge: React.FC<FluencyScoreGaugeProps> = ({ score, size = 160
       <svg className="w-full h-full transform -rotate-90" viewBox={`0 0 ${size} ${size}`}>
         {/* Background Circle */}
         <circle
-          className="text-gray-200 dark:text-gray-600"
+          className="text-surface-muted"
           cx={center}
           cy={center}
           r={radius}
@@ -53,7 +53,7 @@ const FluencyScoreGauge: React.FC<FluencyScoreGaugeProps> = ({ score, size = 160
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className={`text-4xl font-bold ${scoreColor}`}>{clampedScore}</span>
-        <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Score</span>
+        <span className="text-xs font-medium text-secondary uppercase tracking-wider">Score</span>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type, Chat } from "@google/genai";
-import { IELTSLevel, VocabularyWord, Test, WordExplanation, SpeakingFeedback, TranscriptItem, LeaderboardEntry } from '../types';
+import { IELTSLevel, VocabularyWord, Test, WordExplanation, SpeakingFeedback, TranscriptItem, LeaderboardEntry, PronunciationFeedback } from '../types';
 import { placementTest } from '../data/staticData';
 import { shuffle } from "../utils/array";
 
@@ -34,6 +34,29 @@ export const evaluatePlacementTest = async (test: Test, userAnswers: (string | n
 
 
 // --- API-Powered Functions ---
+
+/**
+ * Generates an image for a given prompt using Imagen 2.
+ */
+export const generateImage = async (prompt: string): Promise<string> => {
+    try {
+        const response = await ai.models.generateImages({
+            model: 'imagen-4.0-generate-001',
+            prompt: `A clear, high-quality, educational illustration for the IELTS vocabulary concept: "${prompt}". Minimalist, symbolic, and focused on the word's meaning.`,
+            config: {
+                numberOfImages: 1,
+                outputMimeType: 'image/jpeg',
+                aspectRatio: '16:9',
+            },
+        });
+        const base64ImageBytes: string = response.generatedImages[0].image.imageBytes;
+        return `data:image/jpeg;base64,${base64ImageBytes}`;
+    } catch (error) {
+        console.error("Error generating image:", error);
+        // Return a placeholder or throw a more specific error
+        throw new Error(`Không thể tạo hình ảnh cho: "${prompt}".`);
+    }
+};
 
 /**
  * Generates a list of suggested topics for a given IELTS level.
@@ -220,6 +243,54 @@ export const fetchWordExplanation = async (word: VocabularyWord): Promise<WordEx
         throw new Error(`Không thể tạo giải thích cho từ "${word.word}". Vui lòng thử lại.`);
     }
 };
+
+/**
+ * Analyzes a user's pronunciation of a word.
+ */
+export const fetchPronunciationAnalysis = async (word: VocabularyWord, userTranscript: string): Promise<PronunciationFeedback> => {
+    try {
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-pro',
+            contents: `As an expert IELTS pronunciation coach for a Vietnamese learner, analyze the user's pronunciation attempt.
+            - Target word: "${word.word}"
+            - Phonetic (IPA): ${word.phonetic}
+            - User's transcribed attempt: "${userTranscript}"
+
+            Analyze the transcript. 
+            - If the transcript perfectly matches the target word, set 'isCorrect' to true and provide positive feedback.
+            - If the transcript is close but not perfect (e.g., 'ubikitus' for 'ubiquitous'), identify the specific phonetic error.
+            - If the transcript is completely wrong, state that.
+            
+            Provide your analysis in a structured JSON format.
+            - 'isCorrect': A boolean. True only for a perfect match.
+            - 'feedback': A short, encouraging feedback sentence in English.
+            - 'tip': A concise, actionable tip in Vietnamese to help the user improve. If correct, this can be an empty string.
+            - 'transcript': The user's transcribed attempt.
+            `,
+            config: {
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        isCorrect: { type: Type.BOOLEAN },
+                        feedback: { type: Type.STRING },
+                        tip: { type: Type.STRING },
+                        transcript: { type: Type.STRING },
+                    },
+                    required: ["isCorrect", "feedback", "tip", "transcript"]
+                }
+            }
+        });
+        const result = JSON.parse(response.text);
+        // Ensure the transcript from the prompt is passed through
+        result.transcript = userTranscript;
+        return result;
+    } catch (error) {
+        console.error("Error fetching pronunciation analysis:", error);
+        throw new Error(`Không thể phân tích phát âm cho từ "${word.word}". Vui lòng thử lại.`);
+    }
+};
+
 
 /**
  * Analyzes a speaking transcript and provides IELTS-style feedback.

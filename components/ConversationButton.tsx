@@ -16,7 +16,7 @@ const ConversationButton: React.FC<ConversationButtonProps> = ({ onClick }) => {
     return (
         <button
             onClick={onClick}
-            className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-16 h-16 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform hover:scale-110 transition-all duration-200 ease-in-out"
+            className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-16 h-16 bg-primary text-white rounded-full shadow-lg hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transform hover:scale-110 transition-all duration-200 ease-in-out"
             aria-label="Start conversation practice"
         >
             <MicIcon />

@@ -7,25 +7,29 @@ interface PracticeViewProps {
   onBack: () => void;
   onPlayAudio: (word: string) => void;
   audioState: string | null;
+  onStartPronunciationPractice: (word: VocabularyWord) => void;
 }
 
 const BackArrowIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-2"> <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /> </svg> );
-const CheckIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-6 h-6"> <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.052-.143Z" clipRule="evenodd" /> </svg> );
-const XMarkIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-6 h-6"> <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" /> </svg> );
+const CheckIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-8 h-8"> <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.052-.143Z" clipRule="evenodd" /> </svg> );
+const XMarkIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-8 h-8"> <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" /> </svg> );
 const ReplayIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-2"> <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 11.667 0l3.181-3.183m-4.991-2.69a8.25 8.25 0 0 0-11.667 0l-3.181 3.183" /> </svg>);
 const SpeakerIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6"> <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" /> </svg> );
-const SpeakerWaveIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-indigo-500"> <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" /> </svg> );
+const SpeakerWaveIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-primary"> <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" /> </svg> );
+const ImageIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12 text-secondary"><path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>);
+const MicIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m12 0v-1.5a6 6 0 0 0-6-6v1.5m-6 0V5.25a6 6 0 0 1 6-6v1.5m0 0v1.5m0-1.5a6 6 0 0 0 0 12m0 0v-1.5" /></svg>);
 
 
 type PracticeState = 'PRACTICING' | 'SUMMARY';
 
-const PracticeView: React.FC<PracticeViewProps> = ({ vocabulary, onBack, onPlayAudio, audioState }) => {
+const PracticeView: React.FC<PracticeViewProps> = ({ vocabulary, onBack, onPlayAudio, audioState, onStartPronunciationPractice }) => {
     const [practiceWords, setPracticeWords] = useState<VocabularyWord[]>(() => shuffle(vocabulary));
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
     const [knownWords, setKnownWords] = useState<VocabularyWord[]>([]);
     const [reviewWords, setReviewWords] = useState<VocabularyWord[]>([]);
     const [practiceState, setPracticeState] = useState<PracticeState>('PRACTICING');
+    const [animationClass, setAnimationClass] = useState('animate-fade-in-up');
 
     const currentWord = practiceWords[currentIndex];
 
@@ -36,12 +40,17 @@ const PracticeView: React.FC<PracticeViewProps> = ({ vocabulary, onBack, onPlayA
             setReviewWords(prev => [...prev, currentWord]);
         }
 
-        if (currentIndex < practiceWords.length - 1) {
-            setCurrentIndex(prev => prev + 1);
-            setIsFlipped(false);
-        } else {
-            setPracticeState('SUMMARY');
-        }
+        setAnimationClass('animate-fade-out');
+        setTimeout(() => {
+            if (currentIndex < practiceWords.length - 1) {
+                setCurrentIndex(prev => prev + 1);
+                setIsFlipped(false);
+                setAnimationClass('animate-fade-in-up');
+            } else {
+                setPracticeState('SUMMARY');
+                 setAnimationClass('animate-fade-in-up');
+            }
+        }, 300);
     };
 
     const handleRestartPractice = (onlyReview: boolean) => {
@@ -56,28 +65,28 @@ const PracticeView: React.FC<PracticeViewProps> = ({ vocabulary, onBack, onPlayA
 
     if (practiceState === 'SUMMARY') {
         return (
-            <div className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg text-center animate-fade-in">
-                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">Hoàn thành Lượt Luyện tập!</h2>
+            <div className="bg-surface p-6 sm:p-8 rounded-2xl shadow-lg border border-border text-center animate-scale-in">
+                <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-4">Hoàn thành Lượt Luyện tập!</h2>
                 <div className="flex justify-around items-center my-8">
-                    <div className="text-green-600 dark:text-green-400">
-                        <p className="text-4xl font-bold">{knownWords.length}</p>
-                        <p className="text-lg">Đã biết</p>
+                    <div className="text-center">
+                        <p className="text-4xl font-bold text-success-text">{knownWords.length}</p>
+                        <p className="text-lg text-secondary">Đã biết</p>
                     </div>
-                    <div className="text-red-600 dark:text-red-400">
-                        <p className="text-4xl font-bold">{reviewWords.length}</p>
-                        <p className="text-lg">Cần ôn lại</p>
+                    <div className="text-center">
+                        <p className="text-4xl font-bold text-error-text">{reviewWords.length}</p>
+                        <p className="text-lg text-secondary">Cần ôn lại</p>
                     </div>
                 </div>
                 <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
                     {reviewWords.length > 0 && (
-                        <button onClick={() => handleRestartPractice(true)} className="flex items-center justify-center px-6 py-3 font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
+                        <button onClick={() => handleRestartPractice(true)} className="flex items-center justify-center px-6 py-3 font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl transition-colors">
                             <ReplayIcon /> Ôn lại {reviewWords.length} từ
                         </button>
                     )}
-                    <button onClick={() => handleRestartPractice(false)} className="px-6 py-3 font-semibold text-gray-700 dark:text-gray-200 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                    <button onClick={() => handleRestartPractice(false)} className="px-6 py-3 font-semibold text-secondary bg-surface-muted rounded-xl hover:bg-border transition-colors border border-border">
                         Luyện tập lại tất cả
                     </button>
-                     <button onClick={onBack} className="px-6 py-3 font-semibold">
+                     <button onClick={onBack} className="px-6 py-3 font-semibold text-secondary">
                         Quay lại
                     </button>
                 </div>
@@ -87,9 +96,9 @@ const PracticeView: React.FC<PracticeViewProps> = ({ vocabulary, onBack, onPlayA
 
     if (!currentWord) {
         return (
-            <div className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg text-center animate-fade-in">
-                <p>Không có từ nào để luyện tập.</p>
-                 <button onClick={onBack} className="mt-4 px-6 py-3 font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
+            <div className="bg-surface p-6 sm:p-8 rounded-xl shadow-lg text-center animate-fade-in">
+                <p className="text-secondary">Không có từ nào để luyện tập.</p>
+                 <button onClick={onBack} className="mt-4 px-6 py-3 font-semibold text-white bg-primary hover:bg-primary-hover rounded-lg transition-colors">
                     Quay lại
                 </button>
             </div>
@@ -97,58 +106,76 @@ const PracticeView: React.FC<PracticeViewProps> = ({ vocabulary, onBack, onPlayA
     }
 
     return (
-        <div className="animate-fade-in">
-            <div className="flex justify-between items-center mb-6">
-                <button onClick={onBack} className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-                    <BackArrowIcon />
-                    Quay lại
-                </button>
-                <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-900 dark:text-gray-100">Luyện tập Từ vựng</h2>
-                 <span className="text-sm font-semibold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">
-                    {currentIndex + 1} / {practiceWords.length}
-                </span>
+        <div className="flex flex-col h-full">
+            <div className={`flex-shrink-0 ${animationClass}`}>
+                <div className="flex justify-between items-center mb-4">
+                    <button 
+                        onClick={onBack} 
+                        className="flex items-center px-4 py-2 text-sm font-medium text-secondary bg-surface rounded-lg border border-border hover:bg-surface-muted transition-colors"
+                    >
+                        <BackArrowIcon />
+                    </button>
+                     <span className="text-sm font-semibold text-secondary">
+                        {currentIndex + 1} / {practiceWords.length}
+                    </span>
+                </div>
+                 <div className="w-full bg-surface-muted rounded-full h-4 border border-border p-0.5">
+                    <div className="bg-primary h-full rounded-full" style={{ width: `${((currentIndex + 1) / practiceWords.length) * 100}%`, transition: 'width 0.5s ease-in-out' }}></div>
+                </div>
             </div>
 
-            {/* Flashcard */}
-            <div className="perspective-1000">
-                <div className={`relative w-full h-80 transition-transform duration-700 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
-                    {/* Front */}
-                    <div className="absolute w-full h-full backface-hidden bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 flex flex-col justify-center items-center p-6 text-center">
-                        <div className="flex items-center gap-4">
-                            <h3 className="text-4xl md:text-5xl font-bold text-indigo-600 dark:text-indigo-400">{currentWord.word}</h3>
-                            <button onClick={() => onPlayAudio(currentWord.word)} className="text-gray-500 hover:text-indigo-500 transition-colors" aria-label={`Play pronunciation for ${currentWord.word}`}>
-                                {audioState === currentWord.word ? <SpeakerWaveIcon /> : <SpeakerIcon />}
-                            </button>
+            <div className={`flex-grow flex flex-col justify-center items-center py-4 ${animationClass}`}>
+                <div className="perspective-1000 w-full max-w-md">
+                    <div 
+                        className={`relative w-full h-80 transition-transform duration-700 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}
+                        onClick={() => setIsFlipped(f => !f)}
+                    >
+                        {/* Front */}
+                        <div className="absolute w-full h-full backface-hidden bg-surface rounded-2xl shadow-xl border border-border flex flex-col justify-center items-center p-6 text-center cursor-pointer">
+                            <h3 className="text-4xl md:text-5xl font-bold text-primary">{currentWord.word}</h3>
+                            <p className="text-secondary mt-2">{currentWord.phonetic}</p>
+                            <p className="absolute bottom-4 text-xs text-secondary/70">Chạm để lật</p>
                         </div>
-                        <p className="text-gray-500 dark:text-gray-400 mt-2">{currentWord.phonetic}</p>
-                    </div>
-                    {/* Back */}
-                    <div className="absolute w-full h-full backface-hidden bg-white dark:bg-gray-700 rounded-xl shadow-lg border border-gray-200 dark:border-gray-600 flex flex-col justify-center p-6 rotate-y-180">
-                         <p className="text-lg text-gray-700 dark:text-gray-200 mb-2"><strong>({currentWord.type})</strong> {currentWord.definition}</p>
-                         <p className="text-sm text-gray-600 dark:text-gray-400 italic mb-4">"{currentWord.example}"</p>
-                         <hr className="border-gray-200 dark:border-gray-600 my-2" />
-                         <p className="text-lg text-gray-700 dark:text-gray-200 font-medium mb-2">{currentWord.definition_vi}</p>
-                         <p className="text-sm text-gray-600 dark:text-gray-400 italic">"{currentWord.example_vi}"</p>
+                        {/* Back */}
+                        <div className="absolute w-full h-full backface-hidden bg-surface-muted rounded-2xl shadow-xl border border-border flex flex-col justify-center p-6 rotate-y-180 cursor-pointer">
+                            <div className="flex items-center justify-center gap-4 mb-4">
+                               <button 
+                                    onClick={(e) => { e.stopPropagation(); onPlayAudio(currentWord.word); }} 
+                                    className="text-secondary hover:text-primary transition-colors" 
+                                    aria-label={`Play pronunciation for ${currentWord.word}`}
+                                >
+                                    {audioState === currentWord.word ? <SpeakerWaveIcon /> : <SpeakerIcon />}
+                                </button>
+                               <button 
+                                    onClick={(e) => { e.stopPropagation(); onStartPronunciationPractice(currentWord); }}
+                                    className="text-secondary hover:text-primary transition-colors" 
+                                    aria-label={`Practice pronunciation for ${currentWord.word}`}
+                                >
+                                    <MicIcon />
+                                </button>
+                            </div>
+                            <p className="text-lg text-primary text-center font-medium mb-2">{currentWord.definition_vi}</p>
+                            <p className="text-center text-secondary italic">"{currentWord.example_vi}"</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* Controls */}
-            <div className="mt-8 flex justify-center">
-                {!isFlipped ? (
-                    <button onClick={() => setIsFlipped(true)} className="px-12 py-3 text-lg font-bold text-white bg-indigo-600 rounded-lg shadow-md hover:bg-indigo-700 transform hover:scale-105 transition-all duration-200">
-                        Hiển thị đáp án
+            <div className={`flex-shrink-0 transition-opacity duration-300 ${isFlipped ? 'opacity-100' : 'opacity-0 invisible'}`}>
+                <div className="grid grid-cols-2 gap-4">
+                    <button 
+                        onClick={() => handleMarkWord('review')} 
+                        className="flex flex-col sm:flex-row justify-center items-center gap-2 p-4 text-lg font-bold text-white bg-error hover:bg-error-hover rounded-xl border-b-4 border-red-700 active:border-b-2 active:translate-y-0.5 transition-all duration-150"
+                    >
+                        <XMarkIcon /> Cần ôn lại
                     </button>
-                ) : (
-                    <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                        <button onClick={() => handleMarkWord('review')} className="flex-1 flex justify-center items-center gap-2 px-8 py-3 text-lg font-bold text-white bg-red-600 rounded-lg shadow-md hover:bg-red-700 transform hover:scale-105 transition-all duration-200">
-                           <XMarkIcon /> Cần ôn lại
-                        </button>
-                        <button onClick={() => handleMarkWord('known')} className="flex-1 flex justify-center items-center gap-2 px-8 py-3 text-lg font-bold text-white bg-green-600 rounded-lg shadow-md hover:bg-green-700 transform hover:scale-105 transition-all duration-200">
-                            <CheckIcon /> Đã biết
-                        </button>
-                    </div>
-                )}
+                    <button 
+                        onClick={() => handleMarkWord('known')} 
+                        className="flex flex-col sm:flex-row justify-center items-center gap-2 p-4 text-lg font-bold text-white bg-success hover:bg-success-hover rounded-xl border-b-4 border-green-700 active:border-b-2 active:translate-y-0.5 transition-all duration-150"
+                    >
+                        <CheckIcon /> Đã biết
+                    </button>
+                </div>
             </div>
         </div>
     );
