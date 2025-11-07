@@ -118,7 +118,7 @@
       .bg-primary { background-color: var(--primary); }
       .hover\:bg-primary-hover:hover { background-color: var(--primary-hover); }
       .bg-primary-light { background-color: var(--primary-light); }
-      .text-primary-text { color: var(--text-primary-text); }
+      .text-primary-text { color: var(--primary-text); }
       
       .bg-success { background-color: var(--success); }
       .hover\:bg-success-hover:hover { background-color: var(--success-hover); }
@@ -132,7 +132,7 @@
       .text-warning { color: var(--warning); }
       
       .bg-success-light { background-color: var(--success-light); }
-      .text-success-text { color: var(--text-success-text); }
+      .text-success-text { color: var(--success-text); }
       .bg-error-light { background-color: var(--error-light); }
       .text-error-text { color: var(--error-text); }
       .bg-warning-light { background-color: var(--warning-light); }
@@ -209,13 +209,15 @@
       }
 
     </style>
-  <script type="importmap">
+<script type="importmap">
 {
   "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
     "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.0",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "vite": "https://aistudiocdn.com/vite@^7.2.2",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.0",
     "firebase/": "https://aistudiocdn.com/firebase@^12.5.0/"
   }
 }
