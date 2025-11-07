@@ -1,0 +1,7 @@
+{
+  "name": "IELTS Vocabulary Builder",
+  "description": "An interactive web application for Vietnamese users to learn and test IELTS vocabulary by level and topic, powered by the Gemini API. Each lesson includes a word list with English and Vietnamese definitions, examples, and audio pronunciation. Quizzes feature multiple-choice and fill-in-the-blank questions.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
