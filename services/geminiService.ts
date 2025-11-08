@@ -49,12 +49,13 @@ export const generateImage = async (prompt: string): Promise<string> => {
                 aspectRatio: '16:9',
             },
         });
-        const image = response.generatedImages?.[0];
-        if (!image || !image.image || !image.image.imageBytes) {
+        
+        const imageBytes = response.generatedImages?.[0]?.image?.imageBytes;
+        if (!imageBytes) {
             throw new Error("Image generation failed to return a valid image.");
         }
-        const base64ImageBytes: string = image.image.imageBytes;
-        return `data:image/jpeg;base64,${base64ImageBytes}`;
+        return `data:image/jpeg;base64,${imageBytes}`;
+
     } catch (error) {
         console.error("Error generating image:", error);
         // Return a placeholder or throw a more specific error
@@ -84,11 +85,11 @@ export const fetchTopics = async (level: IELTSLevel): Promise<string[]> => {
             }
         });
         const responseText = response.text;
-        if (typeof responseText === 'undefined') {
-            throw new Error("API returned an empty response for topics.");
+        if (responseText) {
+            const result = JSON.parse(responseText);
+            return result.topics || [];
         }
-        const result = JSON.parse(responseText);
-        return result.topics || [];
+        throw new Error("API returned an empty response for topics.");
     } catch (error) {
         console.error("Error fetching topics:", error);
         throw new Error("Không thể tạo danh sách chủ đề. Vui lòng thử lại.");
@@ -129,14 +130,14 @@ export const fetchVocabulary = async (level: IELTSLevel, topic: string): Promise
             }
         });
         const responseText = response.text;
-        if (typeof responseText === 'undefined') {
-            throw new Error("API returned an empty response for vocabulary.");
+        if (responseText) {
+            const result = JSON.parse(responseText);
+            if (!result.vocabulary || result.vocabulary.length === 0) {
+                throw new Error("API returned no vocabulary.");
+            }
+            return result.vocabulary;
         }
-        const result = JSON.parse(responseText);
-        if (!result.vocabulary || result.vocabulary.length === 0) {
-            throw new Error("API returned no vocabulary.");
-        }
-        return result.vocabulary;
+        throw new Error("API returned an empty response for vocabulary.");
     } catch (error) {
         console.error("Error fetching vocabulary:", error);
         throw new Error(`Không thể tạo từ vựng cho chủ đề "${topic}". Vui lòng thử lại.`);
@@ -206,21 +207,21 @@ export const generateTest = async (vocabulary: VocabularyWord[]): Promise<Test> 
         });
         
         const responseText = response.text;
-        if (typeof responseText === 'undefined') {
-            throw new Error("API returned an empty response for the test.");
-        }
-        const test = JSON.parse(responseText);
-        // Basic validation
-        if (!test.mcqs || !test.fillInTheBlanks || !test.matchingPairs) {
-            throw new Error("Generated test is missing required fields.");
-        }
+        if (responseText) {
+            const test = JSON.parse(responseText);
+            // Basic validation
+            if (!test.mcqs || !test.fillInTheBlanks || !test.matchingPairs) {
+                throw new Error("Generated test is missing required fields.");
+            }
 
-        // Shuffle options for mcqs to ensure randomness
-        test.mcqs.forEach((mcq: any) => {
-            mcq.options = shuffle(mcq.options);
-        });
+            // Shuffle options for mcqs to ensure randomness
+            test.mcqs.forEach((mcq: any) => {
+                mcq.options = shuffle(mcq.options);
+            });
 
-        return test;
+            return test;
+        }
+        throw new Error("API returned an empty response for the test.");
     } catch (error) {
         console.error("Error generating test:", error);
         throw new Error("Không thể tạo bài kiểm tra. Vui lòng thử lại.");
@@ -254,10 +255,10 @@ export const fetchWordExplanation = async (word: VocabularyWord): Promise<WordEx
             }
         });
         const responseText = response.text;
-        if (typeof responseText === 'undefined') {
-            throw new Error("API returned an empty response for the word explanation.");
+        if (responseText) {
+            return JSON.parse(responseText);
         }
-        return JSON.parse(responseText);
+        throw new Error("API returned an empty response for the word explanation.");
     } catch (error) {
         console.error("Error fetching word explanation:", error);
         throw new Error(`Không thể tạo giải thích cho từ "${word.word}". Vui lòng thử lại.`);
@@ -302,13 +303,13 @@ export const fetchPronunciationAnalysis = async (word: VocabularyWord, userTrans
             }
         });
         const responseText = response.text;
-        if (typeof responseText === 'undefined') {
-            throw new Error("API returned an empty response for pronunciation analysis.");
+        if (responseText) {
+            const result = JSON.parse(responseText);
+            // Ensure the transcript from the prompt is passed through
+            result.transcript = userTranscript;
+            return result;
         }
-        const result = JSON.parse(responseText);
-        // Ensure the transcript from the prompt is passed through
-        result.transcript = userTranscript;
-        return result;
+        throw new Error("API returned an empty response for pronunciation analysis.");
     } catch (error) {
         console.error("Error fetching pronunciation analysis:", error);
         throw new Error(`Không thể phân tích phát âm cho từ "${word.word}". Vui lòng thử lại.`);
@@ -395,10 +396,10 @@ export const fetchSpeakingAnalysis = async (transcript: TranscriptItem[]): Promi
             }
         });
         const responseText = response.text;
-        if (typeof responseText === 'undefined') {
-            throw new Error("API returned an empty response for speaking analysis.");
+        if (responseText) {
+            return JSON.parse(responseText);
         }
-        return JSON.parse(responseText);
+        throw new Error("API returned an empty response for speaking analysis.");
     } catch (error) {
         console.error("Error fetching speaking analysis:", error);
         throw new Error("Không thể phân tích phần trình bày của bạn. Vui lòng thử lại.");
@@ -440,14 +441,14 @@ export const fetchWordDetails = async (words: string[]): Promise<VocabularyWord[
             }
         });
         const responseText = response.text;
-        if (typeof responseText === 'undefined') {
-            throw new Error("API returned an empty response for word details.");
+        if (responseText) {
+            const result = JSON.parse(responseText);
+            if (!result.vocabulary) {
+                throw new Error("API returned no vocabulary details.");
+            }
+            return result.vocabulary;
         }
-        const result = JSON.parse(responseText);
-        if (!result.vocabulary) {
-            throw new Error("API returned no vocabulary details.");
-        }
-        return result.vocabulary;
+        throw new Error("API returned an empty response for word details.");
     } catch (error) {
         console.error("Error fetching word details:", error);
         throw new Error(`Không thể lấy chi tiết từ. Vui lòng thử lại.`);
@@ -476,31 +477,31 @@ export const fetchLeaderboardData = async (currentUserScore: number): Promise<Le
             }
         });
         const responseText = response.text;
-        if (typeof responseText === 'undefined') {
-            throw new Error("API returned an empty response for leaderboard data.");
+        if (responseText) {
+            const result = JSON.parse(responseText);
+            const names = result.names || [];
+
+            const leaderboard: Omit<LeaderboardEntry, 'rank'>[] = names.map((name: string) => {
+                // Generate scores clustered around the user's score for a more "realistic" feel
+                const scoreVariation = (Math.random() - 0.5) * 300; // variance of +/- 150
+                const score = Math.max(0, Math.min(Math.round(currentUserScore + scoreVariation), 1000));
+                return { name, fluencyScore: score };
+            });
+
+            // Add current user
+            leaderboard.push({ name: "Bạn", fluencyScore: currentUserScore, isCurrentUser: true });
+
+            // Sort by score and add rank
+            const sortedLeaderboard = leaderboard
+                .sort((a, b) => b.fluencyScore - a.fluencyScore)
+                .map((entry, index) => ({
+                    ...entry,
+                    rank: index + 1,
+                }));
+
+            return sortedLeaderboard;
         }
-        const result = JSON.parse(responseText);
-        const names = result.names || [];
-
-        const leaderboard: Omit<LeaderboardEntry, 'rank'>[] = names.map((name: string) => {
-            // Generate scores clustered around the user's score for a more "realistic" feel
-            const scoreVariation = (Math.random() - 0.5) * 300; // variance of +/- 150
-            const score = Math.max(0, Math.min(Math.round(currentUserScore + scoreVariation), 1000));
-            return { name, fluencyScore: score };
-        });
-
-        // Add current user
-        leaderboard.push({ name: "Bạn", fluencyScore: currentUserScore, isCurrentUser: true });
-
-        // Sort by score and add rank
-        const sortedLeaderboard = leaderboard
-            .sort((a, b) => b.fluencyScore - a.fluencyScore)
-            .map((entry, index) => ({
-                ...entry,
-                rank: index + 1,
-            }));
-
-        return sortedLeaderboard;
+        throw new Error("API returned an empty response for leaderboard data.");
     } catch (error) {
         console.error("Error fetching leaderboard data:", error);
         throw new Error("Không thể tải bảng xếp hạng. Vui lòng thử lại.");
