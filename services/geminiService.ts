@@ -49,7 +49,11 @@ export const generateImage = async (prompt: string): Promise<string> => {
                 aspectRatio: '16:9',
             },
         });
-        const base64ImageBytes: string = response.generatedImages[0].image.imageBytes;
+        const image = response.generatedImages?.[0];
+        if (!image?.image?.imageBytes) {
+            throw new Error("Image generation failed to return a valid image.");
+        }
+        const base64ImageBytes: string = image.image.imageBytes;
         return `data:image/jpeg;base64,${base64ImageBytes}`;
     } catch (error) {
         console.error("Error generating image:", error);
@@ -79,7 +83,11 @@ export const fetchTopics = async (level: IELTSLevel): Promise<string[]> => {
                 }
             }
         });
-        const result = JSON.parse(response.text);
+        const responseText = response.text;
+        if (!responseText) {
+            throw new Error("API returned an empty response for topics.");
+        }
+        const result = JSON.parse(responseText);
         return result.topics || [];
     } catch (error) {
         console.error("Error fetching topics:", error);
@@ -120,7 +128,11 @@ export const fetchVocabulary = async (level: IELTSLevel, topic: string): Promise
                 }
             }
         });
-        const result = JSON.parse(response.text);
+        const responseText = response.text;
+        if (!responseText) {
+            throw new Error("API returned an empty response for vocabulary.");
+        }
+        const result = JSON.parse(responseText);
         if (!result.vocabulary || result.vocabulary.length === 0) {
             throw new Error("API returned no vocabulary.");
         }
@@ -193,7 +205,11 @@ export const generateTest = async (vocabulary: VocabularyWord[]): Promise<Test> 
             }
         });
         
-        const test = JSON.parse(response.text);
+        const responseText = response.text;
+        if (!responseText) {
+            throw new Error("API returned an empty response for the test.");
+        }
+        const test = JSON.parse(responseText);
         // Basic validation
         if (!test.mcqs || !test.fillInTheBlanks || !test.matchingPairs) {
             throw new Error("Generated test is missing required fields.");
@@ -237,7 +253,11 @@ export const fetchWordExplanation = async (word: VocabularyWord): Promise<WordEx
                 }
             }
         });
-        return JSON.parse(response.text);
+        const responseText = response.text;
+        if (!responseText) {
+            throw new Error("API returned an empty response for the word explanation.");
+        }
+        return JSON.parse(responseText);
     } catch (error) {
         console.error("Error fetching word explanation:", error);
         throw new Error(`Không thể tạo giải thích cho từ "${word.word}". Vui lòng thử lại.`);
@@ -281,7 +301,11 @@ export const fetchPronunciationAnalysis = async (word: VocabularyWord, userTrans
                 }
             }
         });
-        const result = JSON.parse(response.text);
+        const responseText = response.text;
+        if (!responseText) {
+            throw new Error("API returned an empty response for pronunciation analysis.");
+        }
+        const result = JSON.parse(responseText);
         // Ensure the transcript from the prompt is passed through
         result.transcript = userTranscript;
         return result;
@@ -370,7 +394,11 @@ export const fetchSpeakingAnalysis = async (transcript: TranscriptItem[]): Promi
                 }
             }
         });
-        return JSON.parse(response.text);
+        const responseText = response.text;
+        if (!responseText) {
+            throw new Error("API returned an empty response for speaking analysis.");
+        }
+        return JSON.parse(responseText);
     } catch (error) {
         console.error("Error fetching speaking analysis:", error);
         throw new Error("Không thể phân tích phần trình bày của bạn. Vui lòng thử lại.");
@@ -411,7 +439,11 @@ export const fetchWordDetails = async (words: string[]): Promise<VocabularyWord[
                 }
             }
         });
-        const result = JSON.parse(response.text);
+        const responseText = response.text;
+        if (!responseText) {
+            throw new Error("API returned an empty response for word details.");
+        }
+        const result = JSON.parse(responseText);
         if (!result.vocabulary) {
             throw new Error("API returned no vocabulary details.");
         }
@@ -443,7 +475,11 @@ export const fetchLeaderboardData = async (currentUserScore: number): Promise<Le
                 }
             }
         });
-        const result = JSON.parse(response.text);
+        const responseText = response.text;
+        if (!responseText) {
+            throw new Error("API returned an empty response for leaderboard data.");
+        }
+        const result = JSON.parse(responseText);
         const names = result.names || [];
 
         const leaderboard: Omit<LeaderboardEntry, 'rank'>[] = names.map((name: string) => {
