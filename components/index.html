@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IELTS Vocabulary Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --font-sans: 'Be Vietnam Pro', sans-serif;
+
+        /* Light Theme */
+        --background-start: #F0F2FF;
+        --background-end: #FFFFFF;
+        --surface: #FFFFFF;
+        --surface-muted: #F8F9FC;
+        --surface-overlay: rgba(255, 255, 255, 0.7);
+        --text-primary: #1E293B;
+        --text-secondary: #64748B;
+        --primary: #4F46E5;
+        --primary-hover: #4338CA;
+        --primary-light: #EEF2FF;
+        --primary-text: #3730A3;
+        --border: #E2E8F0;
+        --border-hover: #C7D2FE;
+
+        --success: #16A34A;
+        --warning: #F59E0B;
+        --error: #DC2626;
+        --success-light: #F0FDF4;
+        --error-light: #FEF2F2;
+        --success-text: #15803D;
+        --error-text: #B91C1C;
+        --success-hover: #15803d;
+        --error-hover: #b91c1c;
+      }
+
+      html.dark {
+        /* Dark Theme */
+        --background-start: #111827;
+        --background-end: #1E293B;
+        --surface: #1F2937;
+        --surface-muted: #374151;
+        --surface-overlay: rgba(31, 41, 55, 0.7);
+        --text-primary: #F9FAFB;
+        --text-secondary: #9CA3AF;
+        --primary: #6366F1;
+        --primary-hover: #4F46E5;
+        --primary-light: rgba(99, 102, 241, 0.1);
+        --primary-text: #A5B4FC;
+        --border: #374151;
+        --border-hover: #4F46E5;
+        
+        --success: #22C55E;
+        --warning: #FBBF24;
+        --error: #F87171;
+        --success-light: rgba(34, 197, 94, 0.1);
+        --error-light: rgba(248, 113, 113, 0.1);
+        --success-text: #4ADE80;
+        --error-text: #FCA5A5;
+        --success-hover: #16a34a;
+        --error-hover: #ef4444;
+      }
+
+      body {
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: var(--background-start);
+        background-image: linear-gradient(180deg, var(--background-start) 0%, var(--background-end) 100%);
+        color: var(--text-primary);
+      }
+      
+      .bg-surface { background-color: var(--surface); }
+      .bg-surface-muted { background-color: var(--surface-muted); }
+      .text-primary { color: var(--text-primary); }
+      .text-secondary { color: var(--text-secondary); }
+      .bg-primary { background-color: var(--primary); }
+      .hover\:bg-primary-hover:hover { background-color: var(--primary-hover); }
+      .bg-primary-light { background-color: var(--primary-light); }
+      .text-primary-text { color: var(--primary-text); }
+      .bg-success { background-color: var(--success); }
+      .hover\:bg-success-hover:hover { background-color: var(--success-hover); }
+      .bg-error { background-color: var(--error); }
+      .hover\:bg-error-hover:hover { background-color: var(--error-hover); }
+      .text-success { color: var(--success); }
+      .text-error { color: var(--error); }
+      .bg-success-light { background-color: var(--success-light); }
+      .text-success-text { color: var(--success-text); }
+      .bg-error-light { background-color: var(--error-light); }
+      .text-error-text { color: var(--error-text); }
+      .border-border { border-color: var(--border); }
+      .hover\:border-primary:hover { border-color: var(--primary); }
+
+
+      /* For Flashcard Animation */
+      .perspective-1000 { perspective: 1000px; }
+      .transform-style-3d { transform-style: preserve-3d; }
+      .backface-hidden { backface-visibility: hidden; }
+      .rotate-y-180 { transform: rotateY(180deg); }
+      
+      /* Animation Keyframes */
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translate3d(0, 30px, 0);
+        }
+        to {
+          opacity: 1;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      /* Animation Utility Classes */
+      .animate-fade-in { 
+        animation: fadeIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      }
+      .animate-fade-out { 
+        animation: fadeOut 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      }
+      .animate-fade-in-up {
+        animation: fadeInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        animation-fill-mode: both;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.0",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "firebase/": "https://aistudiocdn.com/firebase@^12.5.0/"
+  }
+}
+</script>
+</head>
+  <body class="min-h-screen">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
