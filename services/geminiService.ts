@@ -50,7 +50,7 @@ export const generateImage = async (prompt: string): Promise<string> => {
             },
         });
         const image = response.generatedImages?.[0];
-        if (!image?.image?.imageBytes) {
+        if (!image || !image.image || !image.image.imageBytes) {
             throw new Error("Image generation failed to return a valid image.");
         }
         const base64ImageBytes: string = image.image.imageBytes;
@@ -84,7 +84,7 @@ export const fetchTopics = async (level: IELTSLevel): Promise<string[]> => {
             }
         });
         const responseText = response.text;
-        if (!responseText) {
+        if (typeof responseText === 'undefined') {
             throw new Error("API returned an empty response for topics.");
         }
         const result = JSON.parse(responseText);
@@ -129,7 +129,7 @@ export const fetchVocabulary = async (level: IELTSLevel, topic: string): Promise
             }
         });
         const responseText = response.text;
-        if (!responseText) {
+        if (typeof responseText === 'undefined') {
             throw new Error("API returned an empty response for vocabulary.");
         }
         const result = JSON.parse(responseText);
@@ -206,7 +206,7 @@ export const generateTest = async (vocabulary: VocabularyWord[]): Promise<Test> 
         });
         
         const responseText = response.text;
-        if (!responseText) {
+        if (typeof responseText === 'undefined') {
             throw new Error("API returned an empty response for the test.");
         }
         const test = JSON.parse(responseText);
@@ -254,7 +254,7 @@ export const fetchWordExplanation = async (word: VocabularyWord): Promise<WordEx
             }
         });
         const responseText = response.text;
-        if (!responseText) {
+        if (typeof responseText === 'undefined') {
             throw new Error("API returned an empty response for the word explanation.");
         }
         return JSON.parse(responseText);
@@ -302,7 +302,7 @@ export const fetchPronunciationAnalysis = async (word: VocabularyWord, userTrans
             }
         });
         const responseText = response.text;
-        if (!responseText) {
+        if (typeof responseText === 'undefined') {
             throw new Error("API returned an empty response for pronunciation analysis.");
         }
         const result = JSON.parse(responseText);
@@ -395,7 +395,7 @@ export const fetchSpeakingAnalysis = async (transcript: TranscriptItem[]): Promi
             }
         });
         const responseText = response.text;
-        if (!responseText) {
+        if (typeof responseText === 'undefined') {
             throw new Error("API returned an empty response for speaking analysis.");
         }
         return JSON.parse(responseText);
@@ -440,7 +440,7 @@ export const fetchWordDetails = async (words: string[]): Promise<VocabularyWord[
             }
         });
         const responseText = response.text;
-        if (!responseText) {
+        if (typeof responseText === 'undefined') {
             throw new Error("API returned an empty response for word details.");
         }
         const result = JSON.parse(responseText);
@@ -476,7 +476,7 @@ export const fetchLeaderboardData = async (currentUserScore: number): Promise<Le
             }
         });
         const responseText = response.text;
-        if (!responseText) {
+        if (typeof responseText === 'undefined') {
             throw new Error("API returned an empty response for leaderboard data.");
         }
         const result = JSON.parse(responseText);
